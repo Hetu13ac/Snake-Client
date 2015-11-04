@@ -14,17 +14,7 @@ public class HelloWorldClient {
     Start start = new Start();
     start.run();
 
-    try {
 
-      ServerConnection serverConnection = new ServerConnection();
-
-      serverConnection.get("user");
-
-    } catch (Exception e) {
-
-      e.printStackTrace();
-
-    }
   }
 
 }

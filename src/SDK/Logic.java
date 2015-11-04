@@ -21,6 +21,7 @@ public class Logic {
         serverConnection.post(json, "login/");
 
     }
+
     public static void createUser(User user){
 
     }
