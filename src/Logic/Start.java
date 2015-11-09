@@ -3,6 +3,7 @@ package Logic;
 /**
  * Created by HenrikTuyen on 29/10/15.
  */
+
 import GUI.Screen;
 import SDK.ServerConnection;
 import SDK.User;
@@ -16,6 +17,7 @@ public class Start {
     private Screen screen;
 
     public Start(){
+
         screen = new Screen();
         screen.setVisible(true);
 
@@ -23,7 +25,6 @@ public class Start {
 
     public void run(){
         screen.welcome.addActionListener(new WelcomeActionListener());
-
         screen.show(Screen.WELCOME);
     }
 
@@ -41,7 +42,7 @@ public class Start {
 
                     serverConnection.get("users");
 
-                    login("HeinHero", "321");
+                    login(screen.getWelcome().getUsername(), screen.getWelcome().getPassword());
 
                 } catch (Exception e1) {
 

@@ -26,6 +26,8 @@ public class Welcome extends JPanel {
 
     private String username;
     private String password;
+    private JLabel lblNoUser;
+    private JButton btnSignUp;
 
     /**
      * Create the panel.
@@ -65,6 +67,14 @@ public class Welcome extends JPanel {
         btnLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
         btnLogin.setBounds(261, 237, 117, 33);
         add(btnLogin);
+
+        lblNoUser = new JLabel("Don't have a user, please click here:");
+        lblNoUser.setBounds(146, 301, 232, 16);
+        add(lblNoUser);
+
+        btnSignUp = new JButton("Sign Up");
+        btnSignUp.setBounds(373, 296, 117, 29);
+        add(btnSignUp);
     }
 
     public JButton getBtnLogin()
@@ -84,5 +94,6 @@ public class Welcome extends JPanel {
 
     public void addActionListener(ActionListener l){
         btnLogin.addActionListener(l);
+        btnSignUp.addActionListener(l);
     }
 }
