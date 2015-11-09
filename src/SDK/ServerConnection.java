@@ -13,7 +13,7 @@ public class ServerConnection {
 
     public ServerConnection(){
         this.hostAddress = "http://localhost";
-        this.port = 9998;
+        this.port = 8888;
     }
 
     private String hostAddress;

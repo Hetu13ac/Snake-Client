@@ -34,6 +34,8 @@ public class Start {
 
             if (e.getSource() == screen.getWelcome().getBtnLogin()) {
 
+                //login(screen.getWelcome().getUsername(), screen.getWelcome().getPassword());
+
                 if(userAuth())
                 {
                 screen.show(Screen.MENU);
@@ -57,7 +59,7 @@ public class Start {
         }
     }
 
-    /*public static void login(String username, String password){
+    public static void login(String username, String password){
 
         ServerConnection serverConnection = new ServerConnection();
 
@@ -69,7 +71,7 @@ public class Start {
 
         serverConnection.post(json, "login/");
 
-    }*/
+    }
 
     public boolean userAuth()
     {
