@@ -4,6 +4,7 @@ package SDK;
  * Created by HenrikTuyen on 28/10/15.
  */
 
+import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -48,7 +49,7 @@ public class ServerConnection {
 
     }
 
-    public void post(String json, String path){
+    public boolean post(String json, String path){
 
         Client client = Client.create();
 
@@ -60,8 +61,35 @@ public class ServerConnection {
                     + response.getStatus());
         }*/
 
-        String output = response.getEntity(String.class);
-        System.out.println(output);
+        if(response.getStatus() == 200)
+        {
+            String output = response.getEntity(String.class);
+            System.out.println(output);
+            return true;
+        }
+        else
+            return false;
 
     }
+
+
+    /*public boolean auth()
+    {
+        boolean isUserAuth = false;
+
+        String name = screen.getWelcome().getUserName();
+        String password = screen.getWelcome().getPassword();
+        for (BCBSDto user : bcbsDao.getUsers())
+        {
+            if (user.getUserName().equals(name) && user.getPassword().equals(password))
+            {
+                System.out.println("Welcome " + user.getUserName());
+                currentUser = user;
+                isUserAuth = true;
+                screen.getWelcome().getWrongUser().setVisible(false);
+            }
+        }
+        screen.getWelcome().getWrongUser().setVisible(true);
+        return isUserAuth;
+    }*/
 }

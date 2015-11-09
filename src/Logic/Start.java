@@ -34,27 +34,30 @@ public class Start {
 
             if (e.getSource() == screen.getWelcome().getBtnLogin()) {
 
+                if(userAuth())
+                {
                 screen.show(Screen.MENU);
+                }
 
-                try {
+                /*try {
 
                     ServerConnection serverConnection = new ServerConnection();
 
                     serverConnection.get("users");
 
-                    login(screen.getWelcome().getUsername(), screen.getWelcome().getPassword());
+                    //login(screen.getWelcome().getUsername(), screen.getWelcome().getPassword());
 
                 } catch (Exception e1) {
 
                     e1.printStackTrace();
 
-                }
+                }*/
             }
 
         }
     }
 
-    public static void login(String username, String password){
+    /*public static void login(String username, String password){
 
         ServerConnection serverConnection = new ServerConnection();
 
@@ -66,7 +69,22 @@ public class Start {
 
         serverConnection.post(json, "login/");
 
-    }
+    }*/
 
+    public boolean userAuth()
+    {
+        String username = screen.getWelcome().getUsername();
+        String password = screen.getWelcome().getPassword();
+
+        ServerConnection serverConnection = new ServerConnection();
+
+        User user = new User();
+        user.setPassword(password);
+        user.setUsername(username);
+
+        String json = new Gson().toJson(user);
+
+        return serverConnection.post(json, "login/");
+    }
 
 }
