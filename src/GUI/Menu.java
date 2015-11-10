@@ -6,6 +6,7 @@ package GUI;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 public class Menu extends JPanel {
@@ -48,6 +49,15 @@ public class Menu extends JPanel {
         btnLogOff.setBounds(194, 278, 252, 40);
         add(btnLogOff);
 
+    }
+
+    public JButton getBtnLogOff()
+    {
+        return btnLogOff;
+    }
+
+    public void addActionListener(ActionListener l){
+        btnLogOff.addActionListener(l);
     }
 
 }

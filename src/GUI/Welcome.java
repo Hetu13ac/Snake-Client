@@ -28,6 +28,7 @@ public class Welcome extends JPanel {
     private String password;
     private JLabel lblNoUser;
     private JButton btnSignUp;
+    private JLabel lblAccessDenied;
 
     /**
      * Create the panel.
@@ -75,6 +76,13 @@ public class Welcome extends JPanel {
         btnSignUp = new JButton("Sign Up");
         btnSignUp.setBounds(373, 296, 117, 29);
         add(btnSignUp);
+
+        lblAccessDenied = new JLabel("Wrong username or password, please try again!");
+        lblAccessDenied.setForeground(Color.RED);
+        lblAccessDenied.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+        lblAccessDenied.setBounds(130, 119, 379, 25);
+        lblAccessDenied.setVisible(false);
+        add(lblAccessDenied);
     }
 
     public JButton getBtnLogin()
@@ -90,6 +98,17 @@ public class Welcome extends JPanel {
     public String getPassword(){
         password = passwordField.getText();
         return password;
+    }
+
+    public void clearTextFields()
+    {
+        textFieldUsername.setText("");
+        passwordField.setText("");
+    }
+
+    public JLabel getLblAccessDenied()
+    {
+        return lblAccessDenied;
     }
 
     public void addActionListener(ActionListener l){

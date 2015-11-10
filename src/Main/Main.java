@@ -7,7 +7,7 @@ package Main;
 import Logic.Start;
 import SDK.ServerConnection;
 
-public class HelloWorldClient {
+public class Main {
 
   public static void main(String[] argv) {
 

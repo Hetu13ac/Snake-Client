@@ -8,6 +8,9 @@ import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class ServerConnection {
 
@@ -66,5 +69,25 @@ public class ServerConnection {
 
         }
         return "";
+    }
+
+    public String stringMessageParser(String json)
+    {
+        JSONParser jsonParser = new JSONParser();
+
+        String message = "";
+        try
+        {
+            Object obj = jsonParser.parse(json);
+            JSONObject jsonObject = (JSONObject) obj;
+
+            message = ((String) jsonObject.get("message"));
+
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return message;
+
     }
 }

@@ -8,115 +8,90 @@ import GUI.Screen;
 import SDK.ServerConnection;
 import SDK.User;
 import com.google.gson.Gson;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileReader;
 
-public class Start {
+public class Start
+{
 
     private Screen screen;
 
-    public Start() {
-
+    public Start()
+    {
         screen = new Screen();
         screen.setVisible(true);
-
     }
 
-    public void run() {
+    public void run()
+    {
         screen.welcome.addActionListener(new WelcomeActionListener());
+        screen.menu.addActionListener(new MenuActionListener());
+
         screen.show(Screen.WELCOME);
     }
 
-    private class WelcomeActionListener implements ActionListener {
+    private class WelcomeActionListener implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
 
-            if (e.getSource() == screen.getWelcome().getBtnLogin()) {
-                if (userAuth()) {
+            if (e.getSource() == screen.getWelcome().getBtnLogin())
+            {
+                if (userAuth())
+                {
                     screen.show(Screen.MENU);
+                    screen.getWelcome().clearTextFields();
                 }
 
-                /*try {
+            }
+        }
 
-                    ServerConnection serverConnection = new ServerConnection();
 
-                    serverConnection.get("users");
+        public boolean userAuth()
+        {
 
-                } catch (Exception e1) {
+            String username = screen.getWelcome().getUsername();
+            String password = screen.getWelcome().getPassword();
 
-                    e1.printStackTrace();
+            ServerConnection serverConnection = new ServerConnection();
 
-                }*/
+            User user = new User();
+            user.setPassword(password);
+            user.setUsername(username);
+
+            String json = new Gson().toJson(user);
+
+            String message = serverConnection.stringMessageParser(serverConnection.post(json, "login/"));
+            System.out.println(message);
+
+            if (message.equals("Login successful"))
+            {
+                screen.getWelcome().getLblAccessDenied().setVisible(false);
+                return true;
+            }
+            else if(message.equals("Wrong username or password") || message.equals("Error in JSON")) {
+
+                screen.getWelcome().getLblAccessDenied().setVisible(true);
+            }
+
+            return false;
+        }
+    }
+
+    private class MenuActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == screen.getMenu().getBtnLogOff())
+            {
+                screen.show(Screen.WELCOME);
+                System.out.println("Logging off the system");
             }
 
         }
-    }
-
-    public static void login(String username, String password) {
-
-        ServerConnection serverConnection = new ServerConnection();
-
-        User user = new User();
-        user.setPassword(password);
-        user.setUsername(username);
-
-        String json = new Gson().toJson(user);
-
-        serverConnection.post(json, "login/");
-
-    }
-
-
-    public boolean userAuth() {
-
-        String username = screen.getWelcome().getUsername();
-        String password = screen.getWelcome().getPassword();
-
-        ServerConnection serverConnection = new ServerConnection();
-
-        User user = new User();
-        user.setPassword(password);
-        user.setUsername(username);
-
-        String json = new Gson().toJson(user);
-
-        String message = stringMessageParser(serverConnection.post(json, "login/"));
-        System.out.println(message);
-
-        if (message.equals("Login successful")) {
-            return true;
-        }
-        else {
-            //lav nogle Jlabels som giver nogle fejlbeskeder
-        }
-
-        return false;
-    }
-
-
-    public String stringMessageParser(String json)
-    {
-        JSONParser jsonParser = new JSONParser();
-
-        String message = "";
-        try
-        {
-            Object obj = jsonParser.parse(json);
-            JSONObject jsonObject = (JSONObject) obj;
-
-            message = ((String) jsonObject.get("message"));
-
-        } catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        return message;
-
     }
 }
 
