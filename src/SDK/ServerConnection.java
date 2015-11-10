@@ -49,7 +49,7 @@ public class ServerConnection {
 
     }
 
-    public boolean post(String json, String path){
+    public String post(String json, String path) {
 
         Client client = Client.create();
 
@@ -61,35 +61,10 @@ public class ServerConnection {
                     + response.getStatus());
         }*/
 
-        if(response.getStatus() == 200)
-        {
-            String output = response.getEntity(String.class);
-            System.out.println(output);
-            return true;
-        }
-        else
-            return false;
+        if (response != null) {
+            return response.getEntity(String.class);
 
+        }
+        return "";
     }
-
-
-    /*public boolean auth()
-    {
-        boolean isUserAuth = false;
-
-        String name = screen.getWelcome().getUserName();
-        String password = screen.getWelcome().getPassword();
-        for (BCBSDto user : bcbsDao.getUsers())
-        {
-            if (user.getUserName().equals(name) && user.getPassword().equals(password))
-            {
-                System.out.println("Welcome " + user.getUserName());
-                currentUser = user;
-                isUserAuth = true;
-                screen.getWelcome().getWrongUser().setVisible(false);
-            }
-        }
-        screen.getWelcome().getWrongUser().setVisible(true);
-        return isUserAuth;
-    }*/
 }
