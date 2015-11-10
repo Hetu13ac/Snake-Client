@@ -27,6 +27,7 @@ public class Start
     {
         screen.welcome.addActionListener(new WelcomeActionListener());
         screen.menu.addActionListener(new MenuActionListener());
+        screen.signUp.addActionListener(new SignUpActionListener());
 
         screen.show(Screen.WELCOME);
     }
@@ -37,7 +38,7 @@ public class Start
         public void actionPerformed(ActionEvent e)
         {
 
-            if (e.getSource() == screen.getWelcome().getBtnLogin())
+            if(e.getSource() == screen.getWelcome().getBtnLogin())
             {
                 if (userAuth())
                 {
@@ -45,6 +46,10 @@ public class Start
                     screen.getWelcome().clearTextFields();
                 }
 
+            }
+            if(e.getSource() == screen.getWelcome().getBtnSignUp())
+            {
+                screen.show(Screen.SIGNUP);
             }
         }
 
@@ -77,6 +82,24 @@ public class Start
             }
 
             return false;
+        }
+    }
+
+    private class SignUpActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == screen.getSignUp().getBtnSignUp())
+            {
+                screen.getSignUp().getSuccesfulCreate().setVisible(true);
+            }
+            if (e.getSource() == screen.getSignUp().getBtnBack())
+            {
+                screen.show(Screen.WELCOME);
+                screen.getSignUp().getSuccesfulCreate().setVisible(false);
+            }
+
         }
     }
 

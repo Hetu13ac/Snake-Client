@@ -90,6 +90,11 @@ public class Welcome extends JPanel {
         return btnLogin;
     }
 
+    public JButton getBtnSignUp()
+    {
+        return btnSignUp;
+    }
+
     public String getUsername(){
         username = textFieldUsername.getText();
         return username;

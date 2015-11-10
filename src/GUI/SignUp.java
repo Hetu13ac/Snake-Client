@@ -5,7 +5,8 @@ package GUI;
  */
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
@@ -25,6 +26,13 @@ public class SignUp extends JPanel
     private JTextField textFieldEmail;
     private JButton btnSignUp;
     private JButton btnBack;
+    private JLabel lblSuccesfulCreate;
+
+    public String firstName;
+    public String lastName;
+    public String username;
+    public String password;
+    public String email;
 
     /**
      * Create the panel.
@@ -36,72 +44,128 @@ public class SignUp extends JPanel
 
         lblSignUp = new JLabel("Sign up for SNAKE!");
         lblSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
-        lblSignUp.setBounds(179, 55, 281, 33);
+        lblSignUp.setBounds(179, 34, 281, 33);
         add(lblSignUp);
 
         lblPleaseFillIn = new JLabel("Please fill in your details below:");
         lblPleaseFillIn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-        lblPleaseFillIn.setBounds(162, 100, 311, 25);
+        lblPleaseFillIn.setBounds(162, 79, 311, 25);
         add(lblPleaseFillIn);
 
         lblFirstName = new JLabel("First name:");
         lblFirstName.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-        lblFirstName.setBounds(162, 141, 104, 16);
+        lblFirstName.setBounds(162, 120, 104, 16);
         add(lblFirstName);
 
         lblLastName = new JLabel("Last name:");
         lblLastName.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-        lblLastName.setBounds(162, 174, 96, 16);
+        lblLastName.setBounds(162, 153, 96, 16);
         add(lblLastName);
 
         lblUsername = new JLabel("Username:");
         lblUsername.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-        lblUsername.setBounds(162, 205, 96, 16);
+        lblUsername.setBounds(162, 184, 96, 16);
         add(lblUsername);
 
         lblPassword = new JLabel("Password:");
         lblPassword.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-        lblPassword.setBounds(162, 239, 96, 16);
+        lblPassword.setBounds(162, 218, 96, 16);
         add(lblPassword);
 
         lblEmail = new JLabel("Email:");
         lblEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-        lblEmail.setBounds(162, 270, 69, 16);
+        lblEmail.setBounds(162, 249, 69, 16);
         add(lblEmail);
 
         textFieldFirstName = new JTextField();
         textFieldFirstName.setColumns(10);
-        textFieldFirstName.setBounds(262, 137, 271, 25);
+        textFieldFirstName.setBounds(262, 116, 271, 25);
         add(textFieldFirstName);
 
         textFieldLastName = new JTextField();
         textFieldLastName.setColumns(10);
-        textFieldLastName.setBounds(262, 171, 271, 25);
+        textFieldLastName.setBounds(262, 150, 271, 25);
         add(textFieldLastName);
 
         textFieldUsername = new JTextField();
         textFieldUsername.setColumns(10);
-        textFieldUsername.setBounds(262, 202, 271, 25);
+        textFieldUsername.setBounds(262, 181, 271, 25);
         add(textFieldUsername);
 
         textFieldPassword = new JTextField();
         textFieldPassword.setColumns(10);
-        textFieldPassword.setBounds(262, 236, 271, 25);
+        textFieldPassword.setBounds(262, 215, 271, 25);
         add(textFieldPassword);
 
         textFieldEmail = new JTextField();
         textFieldEmail.setColumns(10);
-        textFieldEmail.setBounds(262, 267, 271, 25);
+        textFieldEmail.setBounds(262, 246, 271, 25);
         add(textFieldEmail);
 
         btnSignUp = new JButton("Sign Up");
         btnSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-        btnSignUp.setBounds(261, 304, 117, 33);
+        btnSignUp.setBounds(261, 283, 117, 33);
         add(btnSignUp);
 
         btnBack = new JButton("Back");
-        btnBack.setBounds(6, 375, 117, 29);
+        btnBack.setBounds(6, 341, 117, 29);
         add(btnBack);
+
+        lblSuccesfulCreate = new JLabel("User was succesfully created, click \"back\" to login");
+        lblSuccesfulCreate.setForeground(Color.BLUE);
+        lblSuccesfulCreate.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+        lblSuccesfulCreate.setBounds(162, 319, 374, 33);
+        lblSuccesfulCreate.setVisible(false);
+        add(lblSuccesfulCreate);
     }
 
+    public String getFirstName()
+    {
+        firstName = textFieldFirstName.getText();
+        return firstName;
+    }
+
+    public String getLastName()
+    {
+        lastName = textFieldLastName.getText();
+        return lastName;
+    }
+
+    public String getUsername()
+    {
+        username = textFieldUsername.getText();
+        return username;
+    }
+
+    public String getPassword()
+    {
+        password = textFieldPassword.getText();
+        return password;
+    }
+
+    public String getEmail()
+    {
+        email = textFieldEmail.getText();
+        return email;
+    }
+
+    public JButton getBtnSignUp()
+    {
+        return btnSignUp;
+    }
+
+    public JLabel getSuccesfulCreate()
+    {
+        return lblSuccesfulCreate;
+    }
+
+    public JButton getBtnBack()
+    {
+        return btnBack;
+    }
+
+    public void addActionListener(ActionListener l){
+        btnSignUp.addActionListener(l);
+        btnBack.addActionListener(l);
+    }
 }
