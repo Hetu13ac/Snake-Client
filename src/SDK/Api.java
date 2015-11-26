@@ -26,4 +26,23 @@ public class Api {
         return scores;
     }
 
+    public ArrayList<User> getUsers()
+    {
+        String jsonData = sc.get("users/");
+
+        ArrayList<User> users = new Gson().fromJson(jsonData, new TypeToken<ArrayList<User>>()
+        {
+
+        }.getType());
+
+        return users;
+
+    }
+
+    public String createGame(Game game)
+    {
+        String jsonData = sc.post(new Gson().toJson(game), "games/");
+
+        return sc.stringMessageParser(jsonData);
+    }
 }

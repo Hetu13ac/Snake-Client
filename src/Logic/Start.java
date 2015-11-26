@@ -5,15 +5,13 @@ package Logic;
  */
 
 import GUI.Screen;
-import SDK.Api;
-import SDK.Score;
-import SDK.ServerConnection;
-import SDK.User;
+import SDK.*;
 import com.google.gson.Gson;
 
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Start
@@ -66,8 +64,6 @@ public class Start
 
     public boolean userAuth()
     {
-
-
         String username = screen.getWelcome().getUsername();
         String password = screen.getWelcome().getPassword();
 
@@ -83,10 +79,20 @@ public class Start
             String message = serverConnection.stringMessageParser(serverConnection.post(json, "login/"));
             System.out.println(message);
 
-            if (message.equals("Login successful")) {
+            if (message.equals("Login successful"))
+            {
                 screen.getWelcome().getLblAccessDenied().setVisible(false);
+
+                for (User user : api.getUsers() )
+                {
+                    if (user.getUsername().equals(screen.getWelcome().getUsername()))
+                    {
+                        currentUser = user;
+                    }
+                }
                 return true;
-            } else if (message.equals("Wrong username or password") || message.equals("Error in JSON")) {
+            }
+            else if (message.equals("Wrong username or password") || message.equals("Error in JSON")) {
 
                 screen.getWelcome().getLblAccessDenied().setVisible(true);
             }
@@ -122,10 +128,6 @@ public class Start
         String email = screen.getSignUp().getEmail();
         int type = 1;
 
-        //ServerConnection serverConnection = new ServerConnection();
-
-        //if (!firstName.equals("") || !lastName.equals("") && !username.equals("") || !password.equals("") || !email.equals("")) {
-
             User user = new User();
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -154,9 +156,6 @@ public class Start
             {
                 System.out.println("Noget gik galt");
             }
-
-        //}
-        //else System.out.println("Something went wrong");
 
         return false;
     }
@@ -194,12 +193,52 @@ public class Start
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            if(e.getSource() == screen.getNewGame().getBtnStartGame())
+            {
+                createGame();
+            }
             if (e.getSource() == screen.getNewGame().getBtnBack())
             {
                 screen.show(Screen.MENU);
+                screen.getNewGame().getLblCreated().setVisible(false);
+                screen.getNewGame().clearTextFields();
             }
 
         }
+    }
+
+    public String createGame()
+    {
+        if(!screen.getNewGame().getGameName().equals("") && !screen.getNewGame().getControls().equals(""))
+        {
+            Gamer host = new Gamer();
+            host.setId(currentUser.getId());
+            host.setControls(screen.getNewGame().getControls());
+
+            //Gamer oppnonent = new Gamer();
+
+            Game game = new Game();
+            game.setName(screen.getNewGame().getGameName());
+            game.setHost(host);
+            //game.setOpponent(oppnonent);
+            game.setMapSize(15);
+
+        /*for (User user : api.getUsers() )
+        {
+            if (user.getUsername().equals(screen.getNewGame().getOpponnetUsername()))
+            {
+                oppnonent.setId(user.getId());
+            }
+        }*/
+
+            screen.getNewGame().getLblCreated().setVisible(true);
+            screen.getNewGame().clearTextFields();
+
+            return api.createGame(game);
+        }
+
+        else
+            return "";
     }
 
     private class HighscoresActionListener implements ActionListener

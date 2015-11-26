@@ -9,12 +9,10 @@ import SDK.ServerConnection;
 
 public class Main {
 
-  public static void main(String[] argv) {
-
+  public static void main(String[] argv)
+  {
     Start start = new Start();
     start.run();
-
-
   }
 
 }

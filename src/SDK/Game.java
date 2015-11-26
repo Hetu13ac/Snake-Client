@@ -3,7 +3,7 @@ package SDK;
 import java.sql.Date;
 
 /**
- * Created by Peter on 12-10-2015.
+ * Created by Henrik on 26-11-2015.
  */
 
 public class Game {
