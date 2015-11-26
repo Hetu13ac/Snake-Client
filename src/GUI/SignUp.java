@@ -19,6 +19,7 @@ public class SignUp extends JPanel
     private JLabel lblUsername;
     private JLabel lblPassword;
     private JLabel lblEmail;
+    private JLabel lblAlreadyExist;
     private JTextField textFieldFirstName;
     private JTextField textFieldLastName;
     private JTextField textFieldUsername;
@@ -117,6 +118,13 @@ public class SignUp extends JPanel
         lblSuccesfulCreate.setBounds(162, 319, 374, 33);
         lblSuccesfulCreate.setVisible(false);
         add(lblSuccesfulCreate);
+
+        lblAlreadyExist = new JLabel("Username or Email already exist, please try again");
+        lblAlreadyExist.setForeground(Color.RED);
+        lblAlreadyExist.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+        lblAlreadyExist.setBounds(162, 319, 359, 25);
+        lblAlreadyExist.setVisible(false);
+        add(lblAlreadyExist);
     }
 
     public String getFirstName()
@@ -159,9 +167,25 @@ public class SignUp extends JPanel
         return lblSuccesfulCreate;
     }
 
+    public JLabel getLblAlreadyExist()
+    {
+        return lblAlreadyExist;
+    }
+
     public JButton getBtnBack()
     {
         return btnBack;
+    }
+
+    public void clearFields()
+    {
+        textFieldFirstName.setText("");
+        textFieldLastName.setText("");
+        textFieldUsername.setText("");
+        textFieldPassword.setText("");
+        textFieldEmail.setText("");
+
+        lblSuccesfulCreate.setVisible(false);
     }
 
     public void addActionListener(ActionListener l){

@@ -5,22 +5,30 @@ package Logic;
  */
 
 import GUI.Screen;
+import SDK.Api;
+import SDK.Score;
 import SDK.ServerConnection;
 import SDK.User;
 import com.google.gson.Gson;
 
+import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Start
 {
-
     private Screen screen;
+    private ServerConnection serverConnection;
+    private Api api;
+    private User currentUser;
 
     public Start()
     {
         screen = new Screen();
         screen.setVisible(true);
+        serverConnection = new ServerConnection();
+        api = new Api();
     }
 
     public void run()
@@ -28,6 +36,8 @@ public class Start
         screen.welcome.addActionListener(new WelcomeActionListener());
         screen.menu.addActionListener(new MenuActionListener());
         screen.signUp.addActionListener(new SignUpActionListener());
+        screen.newGame.addActionListener(new NewGameActionListener());
+        screen.highscores.addActionListener(new HighscoresActionListener());
 
         screen.show(Screen.WELCOME);
     }
@@ -61,14 +71,14 @@ public class Start
         String username = screen.getWelcome().getUsername();
         String password = screen.getWelcome().getPassword();
 
-        ServerConnection serverConnection = new ServerConnection();
+        //ServerConnection serverConnection = new ServerConnection();
         if (!username.equals("") && !password.equals("")) {
 
-            User user = new User();
-            user.setPassword(password);
-            user.setUsername(username);
+            currentUser = new User();
+            currentUser.setPassword(password);
+            currentUser.setUsername(username);
 
-            String json = new Gson().toJson(user);
+            String json = new Gson().toJson(currentUser);
 
             String message = serverConnection.stringMessageParser(serverConnection.post(json, "login/"));
             System.out.println(message);
@@ -92,16 +102,12 @@ public class Start
         {
             if (e.getSource() == screen.getSignUp().getBtnSignUp())
             {
-                if(createUser())
-                {
-                    screen.getSignUp().getSuccesfulCreate().setVisible(true);
-                }
-
+                createUser();
             }
             if (e.getSource() == screen.getSignUp().getBtnBack())
             {
                 screen.show(Screen.WELCOME);
-                screen.getSignUp().getSuccesfulCreate().setVisible(false);
+                screen.getSignUp().clearFields();
             }
 
         }
@@ -116,9 +122,9 @@ public class Start
         String email = screen.getSignUp().getEmail();
         int type = 1;
 
-        ServerConnection serverConnection = new ServerConnection();
+        //ServerConnection serverConnection = new ServerConnection();
 
-        //if (!firstName.equals("") && lastName.equals("") && !username.equals("") && !password.equals("") && !email.equals("")) {
+        //if (!firstName.equals("") || !lastName.equals("") && !username.equals("") || !password.equals("") || !email.equals("")) {
 
             User user = new User();
             user.setFirstName(firstName);
@@ -135,11 +141,14 @@ public class Start
 
             if (message.equals("User was created"))
             {
+                screen.getSignUp().getSuccesfulCreate().setVisible(true);
+                screen.getSignUp().getLblAlreadyExist().setVisible(false);
                 return true;
             }
             else if(message.equals("Username or email already exists"))
             {
-                System.out.println("Findes allerede");
+                screen.getSignUp().getLblAlreadyExist().setVisible(true);
+                screen.getSignUp().getSuccesfulCreate().setVisible(false);
             }
             else if(message.equals("Error in JSON"))
             {
@@ -147,6 +156,7 @@ public class Start
             }
 
         //}
+        //else System.out.println("Something went wrong");
 
         return false;
     }
@@ -157,6 +167,19 @@ public class Start
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            if(e.getSource()== screen.getMenu().getBtnHighscores())
+            {
+                ArrayList<Score> scores = api.getHighscores();
+                HighscoreTableModel tableModel = new HighscoreTableModel(scores);
+                screen.show(Screen.HIGHSCORES);
+                screen.getHighscores().getTable().setModel(tableModel);
+
+                serverConnection.get("scores");
+            }
+            if (e.getSource() == screen.getMenu().getBtnNewGame())
+            {
+                screen.show(Screen.NEWGAME);
+            }
             if (e.getSource() == screen.getMenu().getBtnLogOff())
             {
                 screen.show(Screen.WELCOME);
@@ -165,5 +188,90 @@ public class Start
 
         }
     }
+
+    private class NewGameActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == screen.getNewGame().getBtnBack())
+            {
+                screen.show(Screen.MENU);
+            }
+
+        }
+    }
+
+    private class HighscoresActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == screen.getHighscores().getBtnBack())
+            {
+                screen.show(Screen.MENU);
+            }
+        }
+    }
+
+
+    public class HighscoreTableModel extends AbstractTableModel
+    {
+        private static final long serialVersionUID = 1L;
+
+        private ArrayList<Score> highscores;
+        private String[] columns = {"Game ID", "Score", "Opponent ID"};
+        private int numberOfRows;
+
+        public HighscoreTableModel(ArrayList<Score> highscores)
+        {
+            this.highscores = highscores;
+            fireTableStructureChanged();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return columns.length;
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return super.getColumnClass(columnIndex);
+        }
+
+        @Override
+        public int getRowCount() {
+            numberOfRows = highscores.size();
+            return numberOfRows;
+        }
+        public String getColumnName(int columnIndex) {
+
+            return columns[columnIndex];
+
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            switch (columnIndex) {
+
+                case 0:
+                    return highscores.get(rowIndex).getGame().getGameId();
+                case 1:
+                    return highscores.get(rowIndex).getScore() ;
+                case 2:
+                    return highscores.get(rowIndex).getOpponent().getId();
+
+            }
+
+            return null;
+        }
+
+        public Score getSelectedScore(int row)
+        {
+            return highscores.get(row);
+        }
+    }
+
+
+
 }
 

@@ -15,6 +15,8 @@ public class Menu extends JPanel {
     private JButton btnHighscores;
     private JButton btnDeleteGame;
     private JButton btnLogOff;
+    private JButton btnJoinGame;
+    private JButton btnShowResult;
 
     /**
      * Create the panel.
@@ -29,26 +31,43 @@ public class Menu extends JPanel {
         lblUserMenu.setBounds(274, 49, 92, 40);
         add(lblUserMenu);
 
-        btnNewgame = new JButton("Start New Game");
+        btnNewgame = new JButton("Create New Game");
         btnNewgame.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-        btnNewgame.setBounds(194, 119, 252, 40);
+        btnNewgame.setBounds(194, 90, 252, 40);
         add(btnNewgame);
 
         btnHighscores = new JButton("Highscores");
         btnHighscores.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-        btnHighscores.setBounds(194, 171, 252, 40);
+        btnHighscores.setBounds(194, 170, 252, 40);
         add(btnHighscores);
 
         btnDeleteGame = new JButton("Delete Game");
         btnDeleteGame.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-        btnDeleteGame.setBounds(194, 223, 252, 40);
+        btnDeleteGame.setBounds(194, 249, 252, 40);
         add(btnDeleteGame);
 
         btnLogOff = new JButton("Log Off");
         btnLogOff.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-        btnLogOff.setBounds(194, 278, 252, 40);
+        btnLogOff.setBounds(194, 301, 252, 40);
         add(btnLogOff);
 
+        btnJoinGame = new JButton("Join game");
+        btnJoinGame.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+        btnJoinGame.setBounds(194, 129, 252, 40);
+        add(btnJoinGame);
+
+        btnShowResult = new JButton("Show Result");
+        btnShowResult.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+        btnShowResult.setBounds(194, 210, 252, 40);
+        add(btnShowResult);
+
+    }
+
+
+
+    public JButton getBtnHighscores()
+    {
+        return btnHighscores;
     }
 
     public JButton getBtnLogOff()
@@ -56,8 +75,16 @@ public class Menu extends JPanel {
         return btnLogOff;
     }
 
-    public void addActionListener(ActionListener l){
+    public JButton getBtnNewGame()
+    {
+        return btnNewgame;
+    }
+
+    public void addActionListener(ActionListener l)
+    {
+        btnHighscores.addActionListener(l);
         btnLogOff.addActionListener(l);
+        btnNewgame.addActionListener(l);
     }
 
 }
