@@ -80,11 +80,17 @@ public class Menu extends JPanel {
         return btnNewgame;
     }
 
+    public JButton getBtnJoinGame()
+    {
+        return btnJoinGame;
+    }
+
     public void addActionListener(ActionListener l)
     {
         btnHighscores.addActionListener(l);
         btnLogOff.addActionListener(l);
         btnNewgame.addActionListener(l);
+        btnJoinGame.addActionListener(l);
     }
 
 }

@@ -19,20 +19,21 @@ public class Screen extends JFrame
     private CardLayout c;
 
     public static final String WELCOME = "welcome1234";
-    public static final String MENU = "menu123";
     public static final String SIGNUP = "signup123";
+    public static final String MENU = "menu123";
     public static final String HIGHSCORES = "highscore123";
     public static final String NEWGAME = "newgame123";
+    public static final String JOINGAME = "joingame123";
 
     public Welcome welcome;
     public Menu menu;
     public SignUp signUp;
     public Highscores highscores;
     public NewGame newGame;
+    public JoinGame joinGame;
 
 
-    public Screen()
-    {
+    public Screen() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 640, 410);
         setResizable(false);
@@ -44,14 +45,17 @@ public class Screen extends JFrame
         welcome = new Welcome();
         contentPane.add(welcome, WELCOME);
 
+        signUp = new SignUp();
+        contentPane.add(signUp, SIGNUP);
+
         menu = new Menu();
         contentPane.add(menu, MENU);
 
         newGame = new NewGame();
         contentPane.add(newGame, NEWGAME);
 
-        signUp = new SignUp();
-        contentPane.add(signUp, SIGNUP);
+        joinGame = new JoinGame();
+        contentPane.add(joinGame, JOINGAME);
 
         highscores = new Highscores();
         contentPane.add(highscores, HIGHSCORES);
@@ -86,6 +90,11 @@ public class Screen extends JFrame
     public NewGame getNewGame()
     {
         return newGame;
+    }
+
+    public JoinGame getJoinGame()
+    {
+        return joinGame;
     }
 
 }

@@ -36,6 +36,7 @@ public class Start
         screen.signUp.addActionListener(new SignUpActionListener());
         screen.newGame.addActionListener(new NewGameActionListener());
         screen.highscores.addActionListener(new HighscoresActionListener());
+        screen.joinGame.addActionListener(new JoinGameActionListener());
 
         screen.show(Screen.WELCOME);
     }
@@ -92,6 +93,7 @@ public class Start
                 }
                 return true;
             }
+
             else if (message.equals("Wrong username or password") || message.equals("Error in JSON")) {
 
                 screen.getWelcome().getLblAccessDenied().setVisible(true);
@@ -128,6 +130,8 @@ public class Start
         String email = screen.getSignUp().getEmail();
         int type = 1;
 
+        if(!firstName.equals("") && !lastName.equals("") && !username.equals("") && !password.equals("") && !email.equals(""))
+        {
             User user = new User();
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -141,21 +145,17 @@ public class Start
             String message = serverConnection.stringMessageParser(serverConnection.post(json, "users/"));
             System.out.println(message);
 
-            if (message.equals("User was created"))
-            {
+            if (message.equals("User was created")) {
                 screen.getSignUp().getSuccesfulCreate().setVisible(true);
                 screen.getSignUp().getLblAlreadyExist().setVisible(false);
                 return true;
-            }
-            else if(message.equals("Username or email already exists"))
-            {
+            } else if (message.equals("Username or email already exists")) {
                 screen.getSignUp().getLblAlreadyExist().setVisible(true);
                 screen.getSignUp().getSuccesfulCreate().setVisible(false);
-            }
-            else if(message.equals("Error in JSON"))
-            {
+            } else if (message.equals("Error in JSON")) {
                 System.out.println("Noget gik galt");
             }
+        }
 
         return false;
     }
@@ -178,6 +178,10 @@ public class Start
             if (e.getSource() == screen.getMenu().getBtnNewGame())
             {
                 screen.show(Screen.NEWGAME);
+            }
+            if(e.getSource() == screen.getMenu().getBtnJoinGame())
+            {
+                screen.show(Screen.JOINGAME);
             }
             if (e.getSource() == screen.getMenu().getBtnLogOff())
             {
@@ -240,6 +244,44 @@ public class Start
         else
             return "";
     }
+
+    private class JoinGameActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if(e.getSource() == screen.getJoinGame().getBtnJoinGame())
+            {
+                joinGame();
+            }
+            if (e.getSource() == screen.getJoinGame().getBtnBack())
+            {
+                screen.show(Screen.MENU);
+            }
+
+        }
+    }
+
+
+    public String joinGame()
+    {
+        Gamer opponent = new Gamer();
+        opponent.setId(currentUser.getId());
+        opponent.setControls(screen.getJoinGame().getControls());
+
+        Game game = new Game();
+        game.setOpponent(opponent);
+
+        for (Game g : api.getOpenGames() )
+        {
+            if(g.getName().equals(screen.getJoinGame().getGameName())) {
+                game.setGameId(g.getGameId());
+            }
+        }
+
+        return api.joinGame(game);
+    }
+
 
     private class HighscoresActionListener implements ActionListener
     {
